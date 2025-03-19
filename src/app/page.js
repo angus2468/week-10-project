@@ -1,6 +1,13 @@
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Home() {
+  const [name, setName] = useState("");
+
+  const handleNameChange = (e) => {
+    setName(e.target.value);
+  };
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
@@ -12,6 +19,30 @@ export default function Home() {
           height={38}
           priority
         />
+
+        {/* Name Input Field */}
+        <div className="w-full max-w-md">
+          <label 
+            htmlFor="name" 
+            className="block text-sm font-medium mb-2"
+          >
+            Enter your name:
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={handleNameChange}
+            placeholder="Your name"
+            className="w-full px-4 py-2 rounded-md border border-black/[.08] dark:border-white/[.145] bg-transparent focus:outline-none focus:ring-2 focus:ring-black/10 dark:focus:ring-white/20"
+          />
+          {name && (
+            <p className="mt-2 text-sm">
+              Hello, <span className="font-semibold">{name}</span>! Welcome to Next.js.
+            </p>
+          )}
+        </div>
+
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2">
             Get started by editing{" "}
@@ -22,7 +53,6 @@ export default function Home() {
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
-
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
