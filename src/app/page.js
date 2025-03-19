@@ -17,9 +17,9 @@ export default function Page() {
 
   return (
     <div>
-      <section className="chat">
+      <section className="chat p-4">
         <header>
-          <h1>Convex Chat</h1>
+          <h1 className="text-3xl">Convex Chat</h1>
           <div className="name-input-container">
             <label htmlFor="nameInput">Your Name: </label>
             <input
@@ -35,17 +35,18 @@ export default function Page() {
           </p>
         </header>
         {messages?.map((message) => (
-          <article
-            key={message._id}
-            className={
-              message.user === name
-                ? "border-b border-gray-200 bg-red-900 flex justify-end"
-                : "border-b border-gray-200 bg-blue-800 flex"
-            }
-          >
-            <div>{message.user}</div>
-            <p>{message.body}</p>
-          </article>
+          <div key={message._id} className="flex flex-col p-3">
+            <article
+              className={
+                message.user === name
+                  ? "border border-gray-200 bg-red-900 flex flex-col gap-2 p-2"
+                  : "border border-gray-200 bg-blue-800 flex flex-col gap-2 p-2"
+              }
+            >
+              <div>{message.user}</div>
+              <p>{message.body}</p>
+            </article>
+          </div>
         ))}
         <form
           onSubmit={async (e) => {
