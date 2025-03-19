@@ -3,14 +3,11 @@ import { useEffect, useState } from "react";
 import { api } from "../../convex/_generated/api";
 import { useQuery, useMutation } from "convex/react";
 
-const NAME = "Angus";
-
 export default function Page() {
   const messages = useQuery(api.chat.getMessages);
-  // TODO: Add mutation hook here.
   const sendMessage = useMutation(api.chat.sendMessage);
-
   const [newMessageText, setNewMessageText] = useState("");
+  const [name, setName] = useState("Angus"); // Default name, but now it can be changed
 
   useEffect(() => {
     setTimeout(() => {
@@ -23,39 +20,51 @@ export default function Page() {
       <section className="chat">
         <header>
           <h1>Convex Chat</h1>
+          <div className="name-input-container">
+            <label htmlFor="nameInput">Your Name: </label>
+            <input
+              id="nameInput"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+            />
+          </div>
           <p>
-            Connected as <strong>{NAME}</strong>
+            Connected as <strong>{name}</strong>
           </p>
         </header>
         {messages?.map((message) => (
           <article
             key={message._id}
-            className={message.user === NAME ? "message-mine" : ""}
+            className={
+              message.user === name
+                ? "border-b border-gray-200 bg-red-900 flex justify-end"
+                : "border-b border-gray-200 bg-blue-800 flex"
+            }
           >
             <div>{message.user}</div>
-
             <p>{message.body}</p>
           </article>
         ))}
         <form
           onSubmit={async (e) => {
             e.preventDefault();
-
-            await sendMessage({ user: NAME, body: newMessageText });
-
+            if (name.trim() === "") return; // Prevent sending messages without a name
+            await sendMessage({ user: name, body: newMessageText });
             setNewMessageText("");
           }}
         >
           <input
             value={newMessageText}
-            onChange={async (e) => {
+            onChange={(e) => {
               const text = e.target.value;
               setNewMessageText(text);
             }}
             placeholder="Write a message…"
             autoFocus
           />
-          <button type="submit" disabled={!newMessageText}>
+          <button type="submit" disabled={!newMessageText || !name.trim()}>
             Send
           </button>
         </form>
