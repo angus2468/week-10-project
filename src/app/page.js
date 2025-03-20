@@ -7,7 +7,9 @@ export default function Page() {
   const messages = useQuery(api.chat.getMessages);
   const sendMessage = useMutation(api.chat.sendMessage);
   const [newMessageText, setNewMessageText] = useState("");
-  const [name, setName] = useState(`${localStorage.getItem("name") || ""}`);
+  const [name, setName] = useState(
+    `${localStorage.getItem("name") || "Guest"}`
+  );
 
   useEffect(() => {
     setTimeout(() => {
