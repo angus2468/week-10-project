@@ -7,9 +7,7 @@ export default function Page() {
   const messages = useQuery(api.chat.getMessages);
   const sendMessage = useMutation(api.chat.sendMessage);
   const [newMessageText, setNewMessageText] = useState("");
-  const [name, setName] = useState(
-    `${localStorage.getItem("name") || "Guest"}`
-  );
+  const [name, setName] = useState("");
 
   useEffect(() => {
     setTimeout(() => {
@@ -53,7 +51,6 @@ export default function Page() {
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
-                localStorage.setItem("name", e.target.value);
               }}
               placeholder="Enter your name"
               className="bg-gray-600 w-2/3"
