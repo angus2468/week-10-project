@@ -7,7 +7,7 @@ export default function Page() {
   const messages = useQuery(api.chat.getMessages);
   const sendMessage = useMutation(api.chat.sendMessage);
   const [newMessageText, setNewMessageText] = useState("");
-  const [name, setName] = useState("Name"); // Default name, but now it can be changed
+  const [name, setName] = useState(`${localStorage.getItem("name") || ""}`);
 
   useEffect(() => {
     setTimeout(() => {
@@ -42,14 +42,17 @@ export default function Page() {
             </article>
           </div>
         ))}
-        <div className="">
+        <div className="text-3xl">
           <div className="name-input-container">
             <label htmlFor="nameInput">Your Name: </label>
             <input
               id="nameInput"
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                setName(e.target.value);
+                localStorage.setItem("name", e.target.value);
+              }}
               placeholder="Enter your name"
               className="bg-gray-600 w-2/3"
             />
@@ -60,7 +63,7 @@ export default function Page() {
           <form
             onSubmit={async (e) => {
               e.preventDefault();
-              if (name.trim() === "") return; // Prevent sending messages without a name
+              if (name.trim() === "") return;
               await sendMessage({ user: name, body: newMessageText });
               setNewMessageText("");
             }}
